@@ -23,3 +23,15 @@ const HOST = 'localhost';
 const BASE = 'todo_app';
 const USER = 'root';
 const PASS = '';
+
+
+/**
+ * NAMESPACES QUE NÃO SEGUEM A HIERARQIA DE DIRETÓRIOS DO PROJETO
+ */
+const COUSTOM_NAMESPACES = [
+    'PHPMailer' => [
+        'PHPMailer\PHPMailer\PHPMailer' => 'Vendor/PHPMailer/src/PHPMailer.php',
+        'PHPMailer\PHPMailer\Exception' => 'Vendor/PHPMailer/src/Exception.php',
+        'PHPMailer\PHPMailer\SMTP'      => 'Vendor/PHPMailer/src/SMTP.php',
+    ],
+];

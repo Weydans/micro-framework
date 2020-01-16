@@ -2,6 +2,7 @@
 
 use Core\Route;
 use App\Controller\ExempleController;
+use PHPMailer\PHPMailer\PHPMailer;
 
 
 $route = new Route('micro-framework/');
@@ -16,6 +17,12 @@ $route->get('/', function() {
 $route->get('/test', function() {
     $exemple = new ExempleController();
     $exemple->test();
+});
+
+
+$route->get('/email', function() {
+    $mail = new PHPMailer();
+    var_dump($mail);
 });
 
 
