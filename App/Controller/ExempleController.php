@@ -35,4 +35,32 @@ class ExempleController extends Controller
 
         $this->responseApi($dados);
     }
+
+
+    public function validateUser()
+    {
+        $data = [
+            'name'          => 'Weydans Campos de Barros',
+            'password'      => '123456',
+            'email'         => 'weydans@email.com',
+            'zipcode'       => '35170-237',
+            'date'          => '2020-01-19',
+            'street'        => 'Pedras preciosas',
+            'city'          => 'Coronel Fabriciano',
+            'number'        => '124',
+            'neighborhood'  => 'Pedra Linda',
+            'state'         => 'Minas Gerais',
+            'country'       => '',
+            'motrher-name'  => 'Elza de Fátima Campos de Barros',
+            'father-name'   => 'Messias Benevenuto de Barros',
+            'ocupation'     => 'Student',
+        ];
+
+        $model    = new ExempleModel();
+        $response = $model->validateUser($data);
+
+        $this->view('validations.php', [
+            'res' => $response
+        ]);
+    }
 }

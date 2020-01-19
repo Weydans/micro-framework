@@ -26,6 +26,44 @@ const PASS = '';
 
 
 /**
+ * FIELDS DEFAULT DO VALIDATOR
+ */
+const VALIDATOR_FIELDS_DEFAULT = [
+    'name'          => 'Nome',
+    'password'      => 'Senha',
+    'email'         => 'Email',
+    'zipcode'       => 'CEP',
+    'date'          => 'Data',
+    'street'        => 'Rua', 
+    'city'          => 'Cidade',
+    'number'        => 'Número',
+    'neighborhood'  => 'Bairro',
+    'state'         => 'Estado',
+    'country'       => 'País',
+    'motrher-name'  => 'Nome da mãe',
+    'father-name'   => 'Nome do pai',
+    'ocupation'     => 'Profissão',
+];
+
+
+/**
+ * MENSÁGENS DEFAULT DO VALIDATOR
+ */
+const VALIDATOR_MESSAGES_DEFAULT = [
+    'required'  => 'O campo {field} é obrigatório.',
+    'numeric'   => 'O campo {field} deve conter apenas números.',
+    'in'        => 'O campo {field} só aceita os seguintes valores {param}.',
+    'min'       => 'O campo {field} deve ter no mínimo {param} caracteres.',
+    'max'       => 'O campo {field} deve ter no máximo {param} caracteres.',
+];
+
+
+/**
+ * 
+ */
+
+
+/**
  * NAMESPACES QUE NÃO SEGUEM A HIERARQIA DE DIRETÓRIOS DO PROJETO
  */
 const COUSTOM_NAMESPACES = [

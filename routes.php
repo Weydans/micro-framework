@@ -26,4 +26,10 @@ $route->get('/email', function() {
 });
 
 
+$route->get('/validacao', function() {
+    $exemple = new ExempleController();
+    $exemple->validateUser();
+});
+
+
 $route->run();
