@@ -4,6 +4,7 @@ namespace Core\Validator\Validators;
 
 
 use Core\Validator\Validators\ISpecializedValidator;
+use Exception;
 
 /**
  * Required
@@ -13,8 +14,7 @@ use Core\Validator\Validators\ISpecializedValidator;
  * @author Weydans Barros
  * Data de criação 18/01/2020
  */
-
-class Required implements ISpecializedValidator
+class RequiredIf implements ISpecializedValidator
 {
     /**
      * validate($param, $rule)
@@ -27,7 +27,23 @@ class Required implements ISpecializedValidator
      */
     public function validate($param, $rule = null, array $data = []) : bool
     {
-        if (!empty(trim($param)) && is_string($param)) {
+        if (!strpos($rule, '=') > 0) {
+            throw new Exception(
+                "'validate_if' expects a confirm rule like 'validate_if:param=value' but 'validate_if:{$rule}' given
+            ");
+        }
+        
+        list($field, $value) = explode('=', $rule);
+        
+        if (!array_key_exists($field, $data)) {
+            throw new Exception("validator field not found 'validate_if:{$rule}'");
+        }
+        
+        if (empty($value)) {
+            throw new Exception("validator expects one parameter after 'validate_if:{$rule}'");
+        }
+        
+        if (($data[$field] != $value) || ($data[$field] == $value && !empty($param))) {
             return true;
         }
 

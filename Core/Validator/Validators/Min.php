@@ -21,11 +21,12 @@ class Min implements ISpecializedValidator
      * é superior a um valor determinado por uma regra
      * @param $param Valor informado no input do formulário
      * @param $rule  Regra a ser aplicada na validação
+     * @param $data  Dados informados a serem validados
      * @return bool  Retorna true caso seja válido
      */
-    public function validate($param, $rule = null) : bool
+    public function validate($param, $rule = null, array $data = []) : bool
     {
-        if (strlen($param) >= $rule) {
+        if (empty($param) || strlen($param) >= $rule) {
             return true;
         }
 

@@ -11,10 +11,10 @@ use Core\Validator\ISpecializedValidatorFactory;
  * Responsável por acionar validadores 
  * especialistas para campos de formulário
  */
-
 class Validator
 {
     private $specializedValidatorFactory;
+    private $data;
     private $messages;
     private $fields;
     private $resultErrors;
@@ -38,20 +38,22 @@ class Validator
 
 
     /**
-     * validate(array $data, array $validators)
+     * validate(array $data, array $validations)
      * 
      * Gerencia processo de validação chamando métodos especialistas 
-     * @param array $data       Dados a serem validados
-     * @paramarray $validators  Regras a serem aplicadas
-     * @return array            Lista de menságens de dados inválidos
+     * @param array $data        Dados a serem validados
+     * @paramarray $validations  Regras a serem aplicadas
+     * @return array             Lista de menságens de dados inválidos
      */
-    public function validate(array $data, array $validators) : array
+    public function validate(array $data, array $validations) : array
     {
-        foreach ($validators as $key => $singleRule) {
-            $fieldValue    = $data[$key];
-            $arrValidators = explode('|', $singleRule);
+        $this->data = $data;
 
-            foreach ($arrValidators as $rule) {
+        foreach ($validations as $key => $singleRule) {
+            $fieldValue     = $data[$key];
+            $arrValidations = explode('|', $singleRule);
+
+            foreach ($arrValidations as $rule) {
                 $isValid = $this->execute($fieldValue, $rule);
 
                 if (!$isValid) {
@@ -65,12 +67,12 @@ class Validator
 
 
     /**
-     * gerResultErrors()
+     * getResultErrors()
      * 
      * Retorna valor do atributo resultErrors
      * @return $this->resultErrors Resultado dos campos iválidos
      */
-    public function gerResultErrors() : array
+    public function getResultErrors() : array
     {
         return $this->resultErrors;
     }
@@ -105,7 +107,7 @@ class Validator
         $rule                    = substr($rule, strpos($rule, ':', 0) + 1, strlen($rule)); 
         $specializedValidator    = $this->specializedValidatorFactory->build($nameSpecilizedValidator);
 
-        return $specializedValidator->validate($fieldValue, $rule);
+        return $specializedValidator->validate($fieldValue, $rule, $this->data);
     }
 
 
@@ -169,7 +171,7 @@ class Validator
         $aux = explode(':', $rule);
 
         $ruleName  = $aux[0];
-        $ruleParam = isset($aux[1]) ? $aux[1] : '';
+        $param     = isset($aux[1]) ? $aux[1] : '';
 
         $message = null;
         if (in_array($ruleName, array_keys($this->messages))) {
@@ -183,8 +185,15 @@ class Validator
             $field = $bind;
         }
 
-        $message = str_replace('{field}', $field,     $message);
-        $message = str_replace('{param}', $ruleParam, $message);
+        $value = null;
+        if (strpos($param, '=') > 0) {
+            list($param, $value) = explode('=', $param);
+            $param = $this->fields[$param];
+        }
+
+        $message = str_replace('{field}', $field, $message);
+        $message = str_replace('{param}', $param, $message);
+        $message = str_replace('{value}', $value, $message);
 
         return $message;
     }

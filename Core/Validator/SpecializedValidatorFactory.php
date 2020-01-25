@@ -6,11 +6,6 @@ namespace Core\Validator;
 use \Exception;
 use Core\Validator\ISpecializedValidatorFactory;
 use Core\Validator\Validators\ISpecializedValidator;
-use Core\Validator\Validators\In;
-use Core\Validator\Validators\Min;
-use Core\Validator\Validators\Max;
-use Core\Validator\Validators\Numeric;
-use Core\Validator\Validators\Required;
 
 /**
  * SpecializedValidatorFactory
@@ -21,6 +16,8 @@ use Core\Validator\Validators\Required;
 
 class SpecializedValidatorFactory implements ISpecializedValidatorFactory
 {
+    const VALIDATOR_BASE_NAMESPACE = 'Core\Validator\Validators\\';
+
     /**
      * build(string $validator)
      * 
@@ -32,23 +29,30 @@ class SpecializedValidatorFactory implements ISpecializedValidatorFactory
      */
     public function build(string $validator) : ISpecializedValidator
     {
-        if ($validator == 'required') {
-            return new Required();
+        $classValidator = $this->getClassValidator($validator);
 
-        } elseif ($validator == 'in') {
-            return new In();
+        try {
+            if (class_exists($classValidator)) {
+                return new $classValidator();
+            }
 
-        } elseif ($validator == 'min') {
-            return new Min();
+        } catch (Exception $e) {
+            throw new Exception("Validator not found '{$validator}'");         
+        }        
+    }
 
-        } elseif ($validator == 'max') {
-            return new Max();
 
-        } elseif ($validator == 'numeric') {
-            return new Numeric();
+    /**
+     * getClassValidator(string $validator)
+     * 
+     * Monta fully qualified name da classe a ser instanciada
+     * @param  string $validator nome do validador
+     * @return string fully qualified name da classe
+     */
+    private function getClassValidator(string $validator) : string
+    {
+        $classValidator = str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $validator)));
 
-        } else {
-            throw new Exception("O validador informado '{$validator}' não existe.");
-        }           
+        return self::VALIDATOR_BASE_NAMESPACE . $classValidator;
     }
 }

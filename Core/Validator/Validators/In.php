@@ -23,9 +23,10 @@ class In implements ISpecializedValidator
      * formulário pertence a um conjunto de valores pre aceitos
      * @param $param Valor informado no input do formulário
      * @param $rule  Regra a ser aplicada na validação
+     * @param $data  Dados informados a serem validados
      * @return bool  Retorna true caso seja válido
      */
-    public function validate($param, $rule = null) : bool
+    public function validate($param, $rule = null, array $data = []) : bool
     {
         $arrParams = $this->getArrayParams($rule);
 

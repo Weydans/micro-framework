@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use \Exception;
+
 /**
  * Autoload
  * 
@@ -39,7 +41,7 @@ abstract class Autoload
             }
 
             if (!$res) {
-                echo "<b>Não foi possível incluir:</b> {$file}";
+                throw new Exception("Class not found '{$file}'");
             }
         });
     }
