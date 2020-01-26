@@ -22,7 +22,7 @@ class ExempleModel extends Model
 
     public function __construct()
     {
-        $this->validator = new Validator(new SpecializedValidatorFactory(), VALIDATOR_MESSAGES_DEFAULT, VALIDATOR_FIELDS_DEFAULT);
+        $this->validator = new Validator();
     }
 
 
