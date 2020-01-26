@@ -38,7 +38,7 @@ class ExempleModel extends Model
         $validations = [
             'name'          => 'required|min:5|numeric',
             'password'      => 'required|numeric|min:4|max:255',
-            'email'         => 'required|min:5|max:15',
+            'email'         => 'required_if_not_empty:password|min:5|max:15',
             'zipcode'       => 'numeric',
             'date'          => 'required|numeric|min:50',
             'street'        => 'required|numeric',   

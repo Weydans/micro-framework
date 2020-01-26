@@ -13,7 +13,6 @@ use Core\Validator\Validators\ISpecializedValidator;
  * Fábrica responsável pela criação das instâncias de classes 
  * responsáveis por realizar validação de campos de formulários
  */
-
 class SpecializedValidatorFactory implements ISpecializedValidatorFactory
 {
     const VALIDATOR_BASE_NAMESPACE = 'Core\Validator\Validators\\';

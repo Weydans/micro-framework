@@ -50,18 +50,14 @@ const VALIDATOR_FIELDS_DEFAULT = [
  * MENSÁGENS DEFAULT DO VALIDATOR
  */
 const VALIDATOR_MESSAGES_DEFAULT = [
-    'required'    => 'O campo {field} é obrigatório.',
-    'required_if' => 'O campo {field} é obrigatório quando o campo {param} for igual a {value}.',
-    'numeric'     => 'O campo {field} deve conter apenas números.',
-    'in'          => 'O campo {field} só aceita os seguintes valores {param}.',
-    'min'         => 'O campo {field} deve ter no mínimo {param} caracteres.',
-    'max'         => 'O campo {field} deve ter no máximo {param} caracteres.',
+    'required'              => 'O campo {field} é obrigatório.',
+    'required_if'           => 'O campo {field} é obrigatório quando o campo {param} for igual a {value}.',
+    'required_if_not_empty' => 'O campo {field} é obrigatório quando o campo {param} estiver preenchido.',
+    'numeric'               => 'O campo {field} deve conter apenas números.',
+    'in'                    => 'O campo {field} só aceita os seguintes valores {param}.',
+    'min'                   => 'O campo {field} deve ter no mínimo {param} caracteres.',
+    'max'                   => 'O campo {field} deve ter no máximo {param} caracteres.',
 ];
-
-
-/**
- * 
- */
 
 
 /**

@@ -10,6 +10,8 @@ use Core\Validator\ISpecializedValidatorFactory;
  * 
  * Responsável por acionar validadores 
  * especialistas para campos de formulário
+ * @author Weydans Barros
+ * Data de criação 18/01/2020
  */
 class Validator
 {
@@ -188,6 +190,9 @@ class Validator
         $value = null;
         if (strpos($param, '=') > 0) {
             list($param, $value) = explode('=', $param);
+        }
+        
+        if (!empty($param) && in_array($param, array_keys($this->fields))) {
             $param = $this->fields[$param];
         }
 

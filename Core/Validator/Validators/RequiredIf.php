@@ -9,10 +9,10 @@ use Exception;
 /**
  * Required
  * 
- * Responsável por validar se o valor de uma variável é 
- * vazio, null, ''(string vazia) ou ' '(string de espaços vazios)
+ * Responsável por validar se o valor de um determinado campo foi preenchido
+ * quando um outro campo está preenchido com um determinado valor
  * @author Weydans Barros
- * Data de criação 18/01/2020
+ * Data de criação 25/01/2020
  */
 class RequiredIf implements ISpecializedValidator
 {
@@ -20,27 +20,29 @@ class RequiredIf implements ISpecializedValidator
      * validate($param, $rule)
      * 
      * Valida se o valor de um determinado campo foi preenchido
+     * quando um outro campo está preenchido com um determinado valor
      * @param $param Valor informado no input do formulário
      * @param $rule  Regra a ser aplicada na validação
      * @param $data  Dados informados a serem validados
      * @return bool  Retorna true caso seja válido
+     * @throw Exception
      */
     public function validate($param, $rule = null, array $data = []) : bool
     {
         if (!strpos($rule, '=') > 0) {
-            throw new Exception(
-                "'validate_if' expects a confirm rule like 'validate_if:param=value' but 'validate_if:{$rule}' given
+            throw new Exception("
+                'required_if' expects a confirm rule like 'required_if:param=value' but 'required_if:{$rule}' given
             ");
         }
         
         list($field, $value) = explode('=', $rule);
         
         if (!array_key_exists($field, $data)) {
-            throw new Exception("validator field not found 'validate_if:{$rule}'");
+            throw new Exception("validator field not found 'required_if:{$rule}'");
         }
         
         if (empty($value)) {
-            throw new Exception("validator expects one parameter after 'validate_if:{$rule}'");
+            throw new Exception("validator expects one parameter after 'required_if:{$rule}'");
         }
         
         if (($data[$field] != $value) || ($data[$field] == $value && !empty($param))) {

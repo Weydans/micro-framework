@@ -42,7 +42,7 @@ class ExempleController extends Controller
         $data = [
             'name'          => 'Weydans Campos de Barros',
             'password'      => '123456',
-            'email'         => 'weydans@email.com',
+            'email'         => '',
             'zipcode'       => '35170-237',
             'date'          => '2020-01-19',
             'street'        => 'Pedras preciosas',
