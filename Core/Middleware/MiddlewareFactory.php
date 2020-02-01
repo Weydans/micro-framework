@@ -7,10 +7,10 @@ use Core\Middleware\IMiddleware;
 use Core\Middleware\IMiddlewareFactory;
 
 /**
- * SpecializedValidatorFactory
+ * MiddlewareFactory
  * 
- * Fábrica responsável pela criação das instâncias de classes 
- * responsáveis por realizar validação de campos de formulários
+ * Fábrica responsável pela criação das instâncias de 
+ * classes responsáveis por realizar funções de middlewares
  */
 class MiddlewareFactory implements IMiddlewareFactory
 {
@@ -19,11 +19,10 @@ class MiddlewareFactory implements IMiddlewareFactory
     /**
      * build(string $middleware)
      * 
-     * Instancia dinamicamente classes de 
-     * validação de formulário com base no parâmetro informado
+     * Instancia dinamicamente classes com papel de middlewares
      * @param string $middleware Nome da classe a ser instanciada em caixa baixa
-     * @return ISpecializedValidator Objeto que implementa ISpecializedValidator
-     * @throw Exception caso classe não exista nas validações
+     * @return IMiddleware Objeto que implementa IMiddleware
+     * @throw Exception caso classe não exista
      */
     public function build(string $middleware) : IMiddleware
     {

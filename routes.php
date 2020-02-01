@@ -10,8 +10,8 @@ try {
 
 
     $route->get('/', function() {
-    $exemple = new ExempleController();
-    $exemple->index();
+        $exemple = new ExempleController();
+        $exemple->index();
     }, ['Admin']);
 
 

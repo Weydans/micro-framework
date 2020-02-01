@@ -2,6 +2,8 @@
 
 namespace Core;
 
+
+use \Closure;
 use \Exception;
 use Core\Middleware\IMiddlewareFactory;
 use Core\Middleware\MiddlewareFactory;
@@ -38,10 +40,16 @@ class Route {
         // var_dump($this->url);
     }
 
+
     /**
+     * group()
      * 
+     * Cria grupos de rotas com caminhos semelhantes
+     * @param string  $group Prefixo do grupo de rotas
+     * @param array   $middlewares Middlewares do grupo
+     * @param Closure $callback Açoes realizadas dentro do grupo
      */
-    public function group(string $group, array $middlewares = [], $callback)
+    public function group(string $group, array $middlewares = [], Closure $callback)
     {
         $this->group = $group;
 
@@ -55,10 +63,15 @@ class Route {
         $this->clearGroup();
     }
 
+
     /**
+     * middleware()
      * 
+     * Executa middlewares informados por parâmetro
+     * @param array   $middlewares Middlewares a serem chamados
+     * @param Closure $callback Açoes a serem realizadas 
      */
-    public function middleware(array $middlewares, $callback = [])
+    public function middleware(array $middlewares, Closure $callback = null)
     {
         $this->request = $_REQUEST;
 
@@ -80,9 +93,9 @@ class Route {
     }
 
     /**
-    * Sinaliza metodo get
-    */
-    public function get(string $route, $callback, array $middlewares = [])
+     * Sinaliza metodo get
+     */
+    public function get(string $route, Closure $callback, array $middlewares = [])
     {  
         $route = $this->group . $route;
 
@@ -96,7 +109,7 @@ class Route {
     /**
      * Sinaliza metodo post
      */
-    public function post(string $route, $callback, array $middlewares = [])
+    public function post(string $route, Closure $callback, array $middlewares = [])
     {  
         $route = $this->group . $route;
 
@@ -110,7 +123,7 @@ class Route {
     /**
      * Sinaliza metodo put
      */
-    public function put(string $route, $callback, array $middlewares = [])
+    public function put(string $route, Closure $callback, array $middlewares = [])
     {  
         $route = $this->group . $route;
 
@@ -122,7 +135,7 @@ class Route {
     /**
      * Sinaliza metodo delete
      */
-    public function delete(string $route, $callback, array $middlewares = [])
+    public function delete(string $route, Closure $callback, array $middlewares = [])
     {  
         $route = $this->group . $route;
 
@@ -248,6 +261,13 @@ class Route {
         }
     }
 
+
+    /**
+     * callMiddlewares()
+     * 
+     * Centraliza chamada interna ao método middleware
+     * @param array $middlewares Middlewares 
+     */
     private function callMiddlewares(array $middlewares)
     {
         if (!empty($middlewares)) {
@@ -255,6 +275,12 @@ class Route {
         }
     }
 
+
+    /**
+     * clearGroup()
+     * 
+     * Sonfigura atributo grupo como uma string vazia
+     */
     private function clearGroup()
     {
         $this->group = '';
