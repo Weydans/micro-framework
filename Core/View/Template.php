@@ -11,7 +11,6 @@ use Core\View\ITemplate;
  * @author Weydans Barros
  * Data de criação: 12/01/2020
  */
-
 class Template implements ITemplate
 {
     protected $header;
@@ -49,19 +48,29 @@ class Template implements ITemplate
 
     public function setHeader(string $header)
     {
-        $this->header = self::BASE_VIEW . $header;
+        if (!empty($header)) {
+            $this->header = self::BASE_VIEW . $header;
+            return;
+        }
+
+        $this->header = $header;
     }
 
 
     public function setFooter(string $footer)
     {
-        $this->footer = self::BASE_VIEW . $footer;
+        if (!empty($footer)) {
+            $this->footer = self::BASE_VIEW . $footer;
+            return;
+        }
+
+        $this->footer = $footer;
     }
 
 
     public function setContent(string $content)
     {
-        $file     = self::BASE_VIEW . $content;
+        $file = self::BASE_VIEW . $content;
 
         if (file_exists($file) && !is_dir($file)) {
             $this->content = $file;
@@ -77,12 +86,16 @@ class Template implements ITemplate
             extract($dados);
         }
 
-        require_once($this->header);
+        if (!empty($this->header)) {
+            require_once($this->header);
+        }
 
         if (!empty($this->content)) {
             require_once($this->content);
         }
         
-        require_once($this->footer);
+        if (!empty($this->footer)) {
+            require_once($this->footer);
+        }
     }
 }
