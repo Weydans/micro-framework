@@ -8,6 +8,9 @@
  * Data de criação: 12/01/2020
  */
 
+const HOME       = 'http://';
+const VIEW_PATH  = 'App/View/';
+
 /**
  * TEMPLATE
  */
