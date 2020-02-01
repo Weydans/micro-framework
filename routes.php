@@ -5,31 +5,58 @@ use App\Controller\ExempleController;
 use PHPMailer\PHPMailer\PHPMailer;
 
 
-$route = new Route('micro-framework/');
+try {    
+    $route = new Route('micro-framework/');
 
 
-$route->get('/', function() {
-   $exemple = new ExempleController();
-   $exemple->index();
-});
-
-
-$route->get('/test', function() {
+    $route->get('/', function() {
     $exemple = new ExempleController();
-    $exemple->test();
-});
+    $exemple->index();
+    }, ['Admin']);
 
 
-$route->get('/email', function() {
-    $mail = new PHPMailer();
-    var_dump($mail);
-});
+    $route->get('/email', function() {
+        $mail = new PHPMailer();
+        var_dump($mail);
+    });
 
 
-$route->get('/validacao', function() {
-    $exemple = new ExempleController();
-    $exemple->validateUser();
-});
+    $route->middleware(['Auth'], function($route) {
+
+        $route->get('/validacao', function() {
+            $exemple = new ExempleController();
+            $exemple->validateUser();
+        });
+
+        $route->get('/email', function() {
+            $mail = new PHPMailer();
+            var_dump($mail);
+        });
+    });
 
 
-$route->run();
+    $route->group('/validacao', ['auth', 'Admin'], function($route) {
+        
+        $route->get('/test', function() {
+            $exemple = new ExempleController();
+            $exemple->validateUser();
+        });
+        
+        $route->get('/email', function() {
+            $mail = new PHPMailer();
+            var_dump($mail);
+        });
+    });
+
+
+    $route->get('/test', function() {
+        $exemple = new ExempleController();
+        $exemple->test();
+    });
+
+
+    $route->run();
+
+} catch (Exception $e) {
+    throw new Exception($e->getMessage());    
+}

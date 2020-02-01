@@ -2,26 +2,34 @@
 
 namespace Core;
 
+use \Exception;
+use Core\Middleware\IMiddlewareFactory;
+use Core\Middleware\MiddlewareFactory;
+
 /**
  * <b>Rout</b>:
  * Classe Responsável por todo o gerenciamento
  * de rotas do sistema, trabalha sobre arquitetura MVC.
  * @author Weydans Campos de Barros, 06/03/2019.
  */
-
 class Route {
 
     private $url;
     private $route;
+    private $group;
     private $result = null;
+    private $middlewareFactory;
+    private $request;
 
     /**
      * Pega o path da url que o usuario digitou
      * e configura propriedade $url com o valor obtido.
      */
-    public function __construct(string $baseUri = null) 
+    public function __construct(string $baseUri = null, IMiddlewareFactory $middlewareFactory = null) 
     {
-        $this->url = strip_tags(trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
+        $this->url               = strip_tags(trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)));
+        $this->middlewareFactory = !empty($middlewareFactory) ? $middlewareFactory : new MiddlewareFactory();
+        $this->clearGroup();
 
         if ($baseUri) {
             $this->url = str_replace($baseUri, '', $this->url);
@@ -31,34 +39,95 @@ class Route {
     }
 
     /**
+     * 
+     */
+    public function group(string $group, array $middlewares = [], $callback)
+    {
+        $this->group = $group;
+
+        if (!empty($middlewares)) {
+            $this->middleware($middlewares, $callback);
+            $this->clearGroup();
+            return;
+        }
+
+        $callback($this);
+        $this->clearGroup();
+    }
+
+    /**
+     * 
+     */
+    public function middleware(array $middlewares, $callback = [])
+    {
+        $this->request = $_REQUEST;
+
+        try {
+            foreach ($middlewares as $middleware) {
+                $middleware = $this->middlewareFactory->build($middleware);
+                $middleware->execute($this->request);
+            }
+
+            if (!empty($callback)) {
+                $callback($this);
+            }
+
+            $this->middleware = [];
+
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());            
+        }
+    }
+
+    /**
     * Sinaliza metodo get
     */
-    public function get(string $route, $callback){
+    public function get(string $route, $callback, array $middlewares = [])
+    {  
+        $route = $this->group . $route;
+
+        $this->callMiddlewares($middlewares);
+
         if (empty($_POST)) {
             $this->route($route, $callback);
         }
     }
 
     /**
-    * Sinaliza metodo post
-    */
-    public function post(string $route, $callback){
+     * Sinaliza metodo post
+     */
+    public function post(string $route, $callback, array $middlewares = [])
+    {  
+        $route = $this->group . $route;
+
+        $this->callMiddlewares($middlewares);
+
         if ($_POST){
             $this->route($route, $callback);
         }
     }
 
     /**
-    * Sinaliza metodo put
-    */
-    public function put(string $route, $callback){
+     * Sinaliza metodo put
+     */
+    public function put(string $route, $callback, array $middlewares = [])
+    {  
+        $route = $this->group . $route;
+
+        $this->callMiddlewares($middlewares);
+
         $this->route($route, $callback);
     }
 
     /**
-    * Sinaliza metodo delete
-    */
-    public function delete(string $route, $callback){
+     * Sinaliza metodo delete
+     */
+    public function delete(string $route, $callback, array $middlewares = [])
+    {  
+        $route = $this->group . $route;
+
+        $this->callMiddlewares($middlewares);
+
         $this->route($route, $callback);
     }
 
@@ -99,10 +168,11 @@ class Route {
         $routeArray = explode('/', $this->route); 
         
         $param = array();
-
+        
         if ($this->route === $this->url && $this->result === null){
             $callback();
             $this->result = true;
+            die;
 
         } elseif (count($routeArray) === count($urlArray)) {
 
@@ -173,6 +243,20 @@ class Route {
             }
 
             $this->result = true;
+
+            die;
         }
+    }
+
+    private function callMiddlewares(array $middlewares)
+    {
+        if (!empty($middlewares)) {
+            $this->middleware($middlewares);
+        }
+    }
+
+    private function clearGroup()
+    {
+        $this->group = '';
     }
 }

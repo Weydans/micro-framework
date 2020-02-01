@@ -1,0 +1,9 @@
+<?php
+
+namespace Core\Middleware;
+
+
+interface IMiddleware
+{
+    public function execute(&$request);
+}
