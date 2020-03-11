@@ -63,6 +63,10 @@ class BuilderErrorMessage implements IBuilderErrorMessage
         $value = null;
         if (strpos($param, '=') > 0) {
             list($param, $value) = explode('=', $param);
+
+            if (strpos($value, ',') > 0) {
+                list($realValue, $value) = explode(',', $value);
+            }
         }
         
         if (!empty($param) && in_array($param, array_keys($this->fields))) {

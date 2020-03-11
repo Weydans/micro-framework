@@ -36,6 +36,10 @@ class RequiredIf implements ISpecializedValidator
         }
         
         list($field, $value) = explode('=', $rule);
+
+        if (strpos($value, ',') > 0) {
+            list($value, $visibleValue) = explode(',', $value);
+        }
         
         if (!array_key_exists($field, $data)) {
             throw new Exception("validator field not found 'required_if:{$rule}'");

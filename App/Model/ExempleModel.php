@@ -52,7 +52,9 @@ class ExempleModel extends Model
             'ocupation'     => 'required|min:2|max:255',       
         ];
         
-        return $this->validator->validate($data, $validations);
+        if (!$this->validator->validate($data, $validations)) {
+            return $this->validator->getErrorMessages();
+        }
         // var_dump($this->validator->gerResultErrors());
     }
 }

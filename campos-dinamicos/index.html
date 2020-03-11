@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col py-5">
+                    <form action="">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th style="width: 150px;">Classe</th>
+                                    <th style="width: 150px;">Empresa</th>
+                                    <th>Unidade</th>
+                                    <th style="width: 150px;">Quantidade</th>
+                                    <th style="width: 50px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="baseRow">
+                                    <td>
+                                        <select id="produto" class="form-control">
+                                            <option value="">--SELECIONE--</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="classe" class="form-control" readonly>
+                                            <option disabled value=""></option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="empresa" class="form-control" readonly>
+                                            <option value=""></option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id="unidade" class="form-control">
+                                            <option value="">--SELECIONE--</option>
+                                            <option value="1">Quilo</option>
+                                            <option value="2">Litro</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" id="quantidade" class="form-control">
+                                    </td>
+                                    <td>
+                                        <button id="btnAdd" type="button" class="btn btn-primary">+</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>    
+</body>
+</html>

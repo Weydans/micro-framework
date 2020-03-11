@@ -22,6 +22,7 @@ class Validator
     private $data;
     private $messageBuilder;
     private $resultErrors;
+    private $errorMessages;
 
 
     /**
@@ -32,6 +33,7 @@ class Validator
      */
     public function __construct(ISpecializedValidatorFactory $specializedValidatorFactory = null, IBuilderErrorMessage $messageBuilder = null) 
     {
+        $this->errorMessages               = [];
         $this->resultErrors                = [];
         $this->messageBuilder              = !empty($messageBuilder)              ? $messageBuilder              : new BuilderErrorMessage();
         $this->specializedValidatorFactory = !empty($specializedValidatorFactory) ? $specializedValidatorFactory : new SpecializedValidatorFactory();
@@ -46,7 +48,7 @@ class Validator
      * @paramarray $validations  Regras a serem aplicadas
      * @return array             Lista de menságens de dados inválidos
      */
-    public function validate(array $data, array $validations) : array
+    public function validate(array $data, array $validations) : bool
     {
         $this->data = $data;
 
@@ -63,7 +65,25 @@ class Validator
             }
         }   
 
-        return $this->prepareResponse();
+        $this->errorMessages = $this->prepareResponse();
+
+        if (count($this->errorMessages) > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * getErrorMessages()
+     * 
+     * Retorna valor do atributo resultErrors
+     * @return $this->resultErrors Resultado dos campos iválidos
+     */
+    public function getErrorMessages() : array
+    {
+        return $this->errorMessages;
     }
 
 
